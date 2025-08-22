@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { fetchNotes } from '@/lib/api';
+import { fetchNotes, FetchNotesResponse } from '@/lib/api';
 import NoteList from '@/components/NoteList/NoteList';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -11,10 +11,11 @@ import Pagination from '@/components/Pagination/Pagination';
 import Link from 'next/link';
 
 type Props = {
+  initialNotes: FetchNotesResponse;
   tag?: string;
 };
 
-export default function NotesClient({ tag }: Props) {
+export default function NotesClient({ initialNotes, tag }: Props) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -39,6 +40,8 @@ export default function NotesClient({ tag }: Props) {
         ...(tag && tag !== 'All' ? { tag } : {}),
       }),
     placeholderData: keepPreviousData,
+    initialData:
+      page === 1 && debouncedSearch === '' ? initialNotes : undefined,
   });
 
   if (isLoading) return <p>Loading, please wait...</p>;
