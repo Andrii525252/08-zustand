@@ -1,13 +1,15 @@
+'use client';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import css from './NoteForm.module.css';
 import { createNote } from '../../lib/api';
 import type { NewNote } from '../../types/note';
+import { useRouter } from 'next/navigation';
 
 interface NoteFormProps {
   onSuccess?: () => void;
-  onCancel?: () => void;
 }
 
 const validationSchema = Yup.object({
@@ -29,20 +31,25 @@ const initialValues: NewNote = {
   tag: 'Todo',
 };
 
-export default function NoteForm({ onSuccess, onCancel }: NoteFormProps) {
+export default function NoteForm({ onSuccess }: NoteFormProps) {
   const queryClient = useQueryClient();
+
+  const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: (noteData: NewNote) => createNote(noteData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       onSuccess?.();
+      handleCancel();
     },
   });
 
   const handleSubmit = (values: NewNote) => {
     mutation.mutate(values);
   };
+
+  const handleCancel = () => router.push('/notes/filter/All');
 
   return (
     <Formik
@@ -86,7 +93,7 @@ export default function NoteForm({ onSuccess, onCancel }: NoteFormProps) {
             type="button"
             className={css.cancelButton}
             disabled={mutation.isPending}
-            onClick={onCancel}
+            onClick={handleCancel}
           >
             Cancel
           </button>

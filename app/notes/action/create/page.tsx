@@ -1,5 +1,3 @@
-'use client';
-
 import NoteForm from '@/components/NoteForm/NoteForm';
 import css from './CreateNote.module.css';
 import { Metadata } from 'next';
