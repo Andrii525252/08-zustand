@@ -8,7 +8,7 @@ type NoteDraftStore = {
   clearDraft: () => void;
 };
 
-const initialDraft = {
+const initialDraft: NewNoteData = {
   title: '',
   content: '',
   tag: 'Todo',
