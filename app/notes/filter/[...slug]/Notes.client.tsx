@@ -10,6 +10,7 @@ import SearchBox from '@/components/SearchBox/SearchBox';
 import Modal from '@/components/Modal/Modal';
 import css from './Notes.module.css';
 import Pagination from '@/components/Pagination/Pagination';
+import Link from 'next/link';
 
 type Props = {
   initialNotes: FetchNotesResponse;
@@ -51,7 +52,6 @@ export default function NotesClient({ initialNotes, tag }: Props) {
   if (!data) return <p>No notes found.</p>;
 
   const handleCloseModal = () => setIsModalOpen(false);
-  const handleOpenModal = () => setIsModalOpen(true);
 
   return (
     <div className={css.app}>
@@ -64,9 +64,9 @@ export default function NotesClient({ initialNotes, tag }: Props) {
             onPageChange={setPage}
           />
         )}
-        <button className={css.button} type="button" onClick={handleOpenModal}>
+        <Link className={css.button} href="/notes/action/create">
           Create +
-        </button>
+        </Link>
       </header>
 
       {data?.data?.length > 0 ? (
