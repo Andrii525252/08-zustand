@@ -1,3 +1,5 @@
+'use client';
+
 import NoteForm from '@/components/NoteForm/NoteForm';
 import css from './CreateNote.module.css';
 import { Metadata } from 'next';
@@ -8,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Create Note Page',
     description: 'Page where you create a new note',
-    url: 'https://08-zustand-ten-kappa.vercel.app/notes/actions/create/',
+    url: 'https://08-zustand-ten-kappa.vercel.app/notes/action/create/',
     images: {
       url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
       width: 1200,
