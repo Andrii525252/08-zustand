@@ -7,7 +7,7 @@ import type { NewNote } from '../../types/note';
 
 interface NoteFormProps {
   onSuccess?: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
 }
 
 const validationSchema = Yup.object({
