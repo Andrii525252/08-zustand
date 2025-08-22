@@ -1,27 +1,23 @@
 'use client';
 
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { fetchNotes, FetchNotesResponse } from '@/lib/api';
-import NoteForm from '@/components/NoteForm/NoteForm';
+import { fetchNotes } from '@/lib/api';
 import NoteList from '@/components/NoteList/NoteList';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import SearchBox from '@/components/SearchBox/SearchBox';
-import Modal from '@/components/Modal/Modal';
 import css from './Notes.module.css';
 import Pagination from '@/components/Pagination/Pagination';
 import Link from 'next/link';
 
 type Props = {
-  initialNotes: FetchNotesResponse;
   tag?: string;
 };
 
-export default function NotesClient({ initialNotes, tag }: Props) {
+export default function NotesClient({ tag }: Props) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearch = useDebouncedCallback((search: string) => {
     setDebouncedSearch(search);
@@ -43,15 +39,11 @@ export default function NotesClient({ initialNotes, tag }: Props) {
         ...(tag && tag !== 'All' ? { tag } : {}),
       }),
     placeholderData: keepPreviousData,
-    initialData:
-      page === 1 && debouncedSearch === '' ? initialNotes : undefined,
   });
 
   if (isLoading) return <p>Loading, please wait...</p>;
   if (error) return <p>Something went wrong: {error.message}</p>;
   if (!data) return <p>No notes found.</p>;
-
-  const handleCloseModal = () => setIsModalOpen(false);
 
   return (
     <div className={css.app}>
@@ -72,12 +64,7 @@ export default function NotesClient({ initialNotes, tag }: Props) {
       {data?.data?.length > 0 ? (
         <NoteList notes={data.data} />
       ) : (
-        <p>You don`t have any notes here</p>
-      )}
-      {isModalOpen && (
-        <Modal onClose={handleCloseModal}>
-          <NoteForm />
-        </Modal>
+        <p>You don’t have any notes here</p>
       )}
     </div>
   );

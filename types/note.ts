@@ -16,5 +16,5 @@ export type NewNote = {
 export type NewNoteData = {
   title: string;
   content: string;
-  tag: string;
+  tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 };
